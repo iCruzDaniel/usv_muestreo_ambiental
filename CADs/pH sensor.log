@@ -1,0 +1,28 @@
+Solid Edge Translation to STL
+Date: Friday,February 27,2026 09:08PM
+Source File:C:\Users\juans\OneDrive\Escritorio\Juan\Universidad\--- P R O Y E C T O ---\CADS\pH sensor.par
+Source System: SOLID EDGE
+
+Hardware:
+Processor: 11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz
+Operating System: Windows 10 Professional
+Installed Memory: 19.70 GB
+
+Software Information:
+Parasolid Version: 36.0.142
+PSBodyshop Version: 36.0.108
+STL Adapter Version: 13.0.193
+Solid Edge Version: 224.00.00.101 x64
+
+STL Export Options:
+Output File Format:BINARY
+Export Displayed Parts:Off
+structureOption: Monolithic
+Export Units:Inch
+Export Tolerance Value:0.000100
+Export Tolerance Type:Fine
+Export Surface Plane Angle Value:0.523599
+
+Translation progress:
+Translation process completed
+Time required to translate:00 : 00 : 00
