@@ -1,0 +1,17 @@
+/**
+ * AWS IoT Core - Private Key
+ *
+ * Cambiar extensión ".example" por ".h"
+ * Reemplazar con la clave privada del certificado de cliente.
+ * IMPORTANTE: Mantener en secreto. No compartir.
+ */
+#ifndef CLIENT_KEY_H
+#define CLIENT_KEY_H
+
+const char CLIENT_KEY[] = R"EOF(
+-----BEGIN PRIVATE KEY-----
+[PEGAR AQUÍ LA CLAVE PRIVADA]
+-----END PRIVATE KEY-----
+)EOF";
+
+#endif

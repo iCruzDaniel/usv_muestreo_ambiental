@@ -1,0 +1,18 @@
+/**
+ * AWS IoT Core - Root CA Certificate
+ *
+ * Cambiar extensión ".example" por ".h"
+ * Reemplazar el contenido entre R"EOF(...)EOF con el certificado de la CA raíz.
+ * Descargar desde AWS Console → IoT Core → Settings → Endpoint → "Download"
+ * o desde: https://www.amazontrust.com/repository/AmazonRootCA1.pem
+ */
+#ifndef AWS_ROOT_CA_H
+#define AWS_ROOT_CA_H
+
+const char AWS_ROOT_CA[] = R"EOF(
+-----BEGIN CERTIFICATE-----
+[PEGAR AQUÍ EL CERTIFICADO ROOT CA DE AWS IoT]
+-----END CERTIFICATE-----
+)EOF";
+
+#endif

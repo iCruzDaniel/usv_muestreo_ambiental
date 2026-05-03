@@ -1,0 +1,17 @@
+/**
+ * AWS IoT Core - Client Certificate
+ *
+ * Cambiar extensión ".example" por ".h"
+ * Reemplazar con el certificado de cliente generado en AWS IoT Core.
+ * Se encuentra en AWS Console → IoT Core → Secure → Certificates → <tu certificado> → "Download"
+ */
+#ifndef CLIENT_CERT_H
+#define CLIENT_CERT_H
+
+const char CLIENT_CERT[] = R"EOF(
+-----BEGIN CERTIFICATE-----
+[PEGAR AQUÍ EL CERTIFICADO DE CLIENTE]
+-----END CERTIFICATE-----
+)EOF";
+
+#endif
