@@ -1,0 +1,10 @@
+CODOS y TEs 3/4': 
+
+ID = 27mm
+OD = 33.5mm
+Prof = 22.5mm
+
+Tubos 3/4':
+
+OD = 27mm
+ID = 23.5mm
