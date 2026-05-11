@@ -4,6 +4,7 @@
 
 #include "Logger.h"
 #include <stdarg.h>
+#include <TimeManager.h>
 
 // Statics
 ITransport* Logger::_transport = nullptr;
@@ -55,11 +56,16 @@ void Logger::_log(LogLevel level, const char* tag, const char* fmt, va_list args
 
 void Logger::_publishMqtt(LogLevel level, const char* tag, const char* msg) {
     static const char* levelNames[] = {"INFO", "WARN", "ERROR"};
-    StaticJsonDocument<256> doc;
-    doc["ts"]  = millis();
-    doc["lvl"] = levelNames[(uint8_t)level];
-    doc["tag"] = tag;
-    doc["msg"] = msg;
+    StaticJsonDocument<512> doc;
+    
+    JsonObject logs = doc.createNestedObject("logs");
+    logs["log_id"]        = "LOG-" + String(millis()); // Placeholder
+    logs["usv_id"]        = CLIENT_ID;
+    logs["mission_id"]    = "MISION-N/A"; // Placeholder, se podría inyectar
+    logs["nivel"]         = levelNames[(uint8_t)level];
+    logs["mensaje"]       = msg;
+    logs["codigo"]        = (uint8_t)level + 100; // Ejemplo de código
+    logs["timestamp_utc"] = TimeManager::getIsoTimestamp();
 
     String out;
     serializeJson(doc, out);

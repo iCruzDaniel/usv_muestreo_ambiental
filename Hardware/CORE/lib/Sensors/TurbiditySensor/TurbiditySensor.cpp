@@ -15,6 +15,14 @@ bool TurbiditySensor::begin() {
     analogReadResolution(12);
     analogSetAttenuation(ADC_11db);
     Serial.printf("[TURB] Iniciado — pin %d\n", _pin);
+
+#if defined(TURB_CAL_SLOPE) && defined(TURB_CAL_OFFSET)
+    setCalibration(TURB_CAL_SLOPE, TURB_CAL_OFFSET);
+    Serial.println("[TURB] Calibración cargada desde platformio.ini");
+#else
+    Serial.println("[TURB] ADVERTENCIA: Valores por defecto. Requiere calibración.");
+#endif
+
     _ready = true;
     return true;
 }

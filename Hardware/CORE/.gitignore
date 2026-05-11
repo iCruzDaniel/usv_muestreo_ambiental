@@ -9,3 +9,5 @@
 include/certs/aws_root_ca.h
 include/certs/client_cert.h
 include/certs/client_key.h
+
+.env

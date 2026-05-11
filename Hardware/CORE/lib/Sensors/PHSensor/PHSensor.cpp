@@ -15,6 +15,14 @@ bool PHSensor::begin() {
     analogReadResolution(12);
     analogSetAttenuation(ADC_11db);
     Serial.printf("[PH] Iniciado — pin %d\n", _pin);
+
+#if defined(PH_CAL_V4) && defined(PH_CAL_V7)
+    calibrate(PH_CAL_V4, PH_CAL_V7);
+    Serial.println("[PH] Calibración cargada desde platformio.ini");
+#else
+    Serial.println("[PH] ADVERTENCIA: Valores por defecto. Requiere calibración.");
+#endif
+
     _ready = true;
     return true;
 }

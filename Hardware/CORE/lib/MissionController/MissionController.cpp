@@ -5,6 +5,7 @@
 #include "MissionController.h"
 #include <MavlinkHandler.h>
 #include <Logger.h>
+#include <TimeManager.h>
 #include <math.h>
 
 static constexpr double EARTH_R_M  = 6371000.0;
@@ -90,16 +91,25 @@ void MissionController::_captureSample(const Waypoint& wp,
     Logger::info("MISSION", "Muestra WP %d @ (%.6f, %.6f)",
                  _mission.current, lat, lon);
 
-    StaticJsonDocument<384> doc;
-    doc["wp_idx"] = _mission.current;
-    doc["lat"]    = lat;
-    doc["lon"]    = lon;
-    doc["ts"]     = millis();
+    StaticJsonDocument<512> doc;
+    JsonObject m = doc.createNestedObject("mision");
+    
+    m["mission_id"]   = "MISION-" + String(millis()); // Placeholder o ID real
+    m["usv_id"]       = CLIENT_ID;
+    m["tipo_mision"]  = "MCA"; // Muestreo de Calidad de Agua
+    m["estado_mision"]= "EN_PROGRESO";
 
-    JsonObject sensors = doc.createNestedObject("sensors");
-    sensors["turbidity_ntu"] = _turbidity->getValue();
-    sensors["ph"]            = _ph->getValue();
-    sensors["temp_c"]        = _temp->getValue();
+    m["punto_id"]     = "PUNTO-" + String(_mission.current);
+    m["latitud"]      = lat;
+    m["longitud"]     = lon;
+    m["profundidad_m"]= 1.5; // Placeholder (requiere ecosonda)
+
+    m["temperatura_agua_c"]   = _temp->getValue();
+    m["ph_agua"]              = _ph->getValue();
+    m["turbidez_ntu"]         = _turbidity->getValue();
+    m["oxigeno_disuelto_ppm"] = 0.0; // Placeholder
+
+    m["timestamp_utc"] = TimeManager::getIsoTimestamp();
 
     String out;
     serializeJson(doc, out);

@@ -13,6 +13,7 @@
 #include <MavlinkHandler.h>
 #include <MissionController.h>
 #include <Logger.h>
+#include <TimeManager.h>
 #include <ArduinoJson.h>
 
 // ── Constructor ───────────────────────────────────────────────────────────────
@@ -170,15 +171,44 @@ void SystemFSM::_transitionTo(SystemState next) {
 
 // ── _publishStatus() — tópico general_status ─────────────────────────────────
 void SystemFSM::_publishStatus() {
-    static const char* stateNames[] = {"BOOT", "STANDBY", "MISSION_ACTIVE", "EMERGENCY"};
+    static const char* stateNames[] = {"INICIALIZANDO", "STANDBY", "EN_MISION", "EMERGENCIA"};
 
-    StaticJsonDocument<256> doc;
-    doc["ts"]         = millis();
-    doc["state"]      = stateNames[(int)_state];
-    doc["wp_current"] = _mission->currentWaypointIdx();
-    doc["battery_adc"]= analogRead(PIN_BATTERY);
-    doc["mavlink_ok"] = _mavlink->isConnected();
-    doc["client_id"]  = CLIENT_ID;
+    StaticJsonDocument<1024> doc;
+    JsonObject s = doc.createNestedObject("general_usv_status");
+    
+    s["usv_id"]    = CLIENT_ID;
+    s["conexion"]  = _transport->isMqttConnected() ? "ONLINE" : "OFFLINE";
+    s["actividad"] = stateNames[(int)_state];
+
+    // Batería y Energía
+    mavlink_battery_status_t batt;
+    if (_mavlink->getBattery(batt)) {
+        s["bateria_porcentaje"] = batt.battery_remaining;
+        s["corriente_motor_1_a"] = batt.current_battery / 100.0f; // Ejemplo, mapear según HW
+        s["corriente_motor_2_a"] = 0.0;
+        s["voltaje_celda_1_v"]  = batt.voltages[0] / 1000.0f;
+        s["voltaje_celda_2_v"]  = batt.voltages[1] / 1000.0f;
+        s["voltaje_celda_3_v"]  = batt.voltages[2] / 1000.0f;
+    } else {
+        s["bateria_porcentaje"] = (analogRead(PIN_BATTERY) / 4095.0f) * 100.0f; // Fallback
+    }
+
+    // Orientación (Attitude)
+    mavlink_attitude_t att;
+    if (_mavlink->getAttitude(att)) {
+        s["roll_grados"]  = att.roll * RAD_TO_DEG;
+        s["pitch_grados"] = att.pitch * RAD_TO_DEG;
+        s["yaw_grados"]   = att.yaw * RAD_TO_DEG;
+    }
+
+    // Posición GPS
+    mavlink_global_position_int_t pos;
+    if (_mavlink->getPosition(pos)) {
+        s["latitud"]  = pos.lat / 1e7;
+        s["longitud"] = pos.lon / 1e7;
+    }
+
+    s["timestamp_utc"] = TimeManager::getIsoTimestamp();
 
     String out;
     serializeJson(doc, out);

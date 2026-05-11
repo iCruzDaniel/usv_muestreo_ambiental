@@ -53,10 +53,10 @@
   #define GSM_BAUD 115200
 #endif
 #ifndef MAV_TX
-  #define MAV_TX 2
+  #define MAV_TX 25
 #endif
 #ifndef MAV_RX
-  #define MAV_RX 4
+  #define MAV_RX 26
 #endif
 #ifndef MAV_BAUD
   #define MAV_BAUD 57600

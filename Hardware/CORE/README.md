@@ -42,8 +42,8 @@ El sistema actúa como puente entre un autopiloto (vía MAVLink v2), sensores de
 |------|---------|------------|-------------------|
 | 16 | RX1 (UART1) | A7670SA TX | `-D GSM_RX` |
 | 17 | TX1 (UART1) | A7670SA RX | `-D GSM_TX` |
-| 2 | TX2 (UART2) | Flight Controller MAVLink RX | `-D MAV_TX` |
-| 4 | RX2 (UART2) | Flight Controller MAVLink TX | `-D MAV_RX` |
+| 25 | TX2 (UART2) | Flight Controller MAVLink RX | `-D MAV_TX` |
+| 26 | RX2 (UART2) | Flight Controller MAVLink TX | `-D MAV_RX` |
 | 34 | ADC (input only) | Sensor de turbidez | `-D PIN_TURBIDITY` |
 | 35 | ADC (input only) | Sensor de pH | `-D PIN_PH` |
 | 36 | ADC (input only) | Divisor de voltaje batería | `-D PIN_BATTERY` |
@@ -319,7 +319,7 @@ CORE/
 │   │   └── TemperatureSensor/          # ISensor — MAX31865 PT100, detección de fallas
 │   │       ├── TemperatureSensor.h
 │   │       └── TemperatureSensor.cpp
-│   ├── MavlinkHandler/                 # Parser no bloqueante MAVLink v2
+│   ├── MavlinkHandler/                 # Handler MAVLink v2 (Heartbeat + Data Streams)
 │   │   ├── MavlinkHandler.h
 │   │   └── MavlinkHandler.cpp
 │   ├── Logger/                         # Niveles INFO/WARN/ERROR → Serial + MQTT
@@ -373,7 +373,7 @@ Todas las constantes se inyectan en tiempo de compilación:
 | `-D PIN_BATTERY` | Pin ADC batería | `36` |
 | `-D MAX31865_CS` | Pin CS del MAX31865 | `5` |
 | `-D GSM_TX / GSM_RX` | UART1 del módem | `17` / `16` |
-| `-D MAV_TX / MAV_RX` | UART2 MAVLink | `2` / `4` |
+| `-D MAV_TX / MAV_RX` | UART2 MAVLink | `25` / `26` |
 
 ### Intervalos y tamaños
 
